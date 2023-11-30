@@ -2,7 +2,7 @@ name: Node.js CI/CD
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ master, dev ]
 
 jobs:
   build-and-publish:
@@ -25,7 +25,7 @@ jobs:
 
 
     - name: Publish to Public NPM
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/master'
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.PUBLISH}}
