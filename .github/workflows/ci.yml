@@ -23,20 +23,9 @@ jobs:
       id: tests
       run: npm test
 
-    - name: Set package name for dev branch
-      if: github.ref == 'refs/heads/dev'
-      run: |
-        npm config set package:name $(npm pkg get name | tr -d '"' | sed 's/$/-dev/')
-    
 
     - name: Publish to Public NPM
       if: github.ref == 'refs/heads/main'
       run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPMPUBLISH}}
-
-    - name: Publish to Private NPM
-      if: github.ref == 'refs/heads/dev'
-      run: npm publish --access private
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPMPUBLISH}}
