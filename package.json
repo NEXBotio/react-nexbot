@@ -1,19 +1,27 @@
 {
   "name": "react-nexbot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Hooks and utilities to chat with NEXBots from your project",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["react","ai","generative","nexbot"],
+  "author": "orlando@nexbot.io",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.10",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamorlando/react-nexbot.git"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0"
   }
+  
 }
