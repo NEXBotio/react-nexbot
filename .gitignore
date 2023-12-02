@@ -2,3 +2,10 @@ dist/
 node_modules/
 package-lock.json
 
+.envrc
+build.sh
+react-nexbot-0.0.1.tgz
+runtest.sh
+wipe.sh
+.vscode/launch.json
+react-nexbot-test/**

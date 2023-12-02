@@ -1,6 +1,6 @@
 // utils.js
 
-import { Conversation } from "@api/api";
+import { Conversation } from "../api/api";
 
 import { v4 as uuidv4 } from "uuid";
 

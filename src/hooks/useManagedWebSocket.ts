@@ -16,7 +16,7 @@ function useManagedWebSocket(url: string|null) {
       } = useWebSocket(socketUrl, {
         shouldReconnect: () => socketUrl !== null,
       }) as {
-        sendJsonMessage: Function; 
+        sendJsonMessage: Function; // Replace Function with a more specific type
         lastJsonMessage: any; 
         readyState: ReadyState;
         getWebSocket: Function; 
