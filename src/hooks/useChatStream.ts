@@ -42,6 +42,7 @@ export function useChatStream(
   const { sendJsonMessage, lastJsonMessage, getWebSocket, setSocketUrl } = useManagedWebSocket(url);
   const {wsTicket} = useWebSocketTicket(keyRetrievalCallback, 30 * 60, botId)
 
+
   useEffect(() => {
     if (botId && wsTicket) {
           const ticket = `${WEBSOCKET_CHAT_PATH}/${wsTicket}/messages`
@@ -50,44 +51,47 @@ export function useChatStream(
     }
   }, [botId, setUrl, setSocketUrl,wsTicket]);
 
-  const messageStreamObservable: Subject<MessageStream> = useMemo(
-    () => new Subject<MessageStream>(),
-    [outgoingMessage]
-  );
+const messageObservableRef = React.useRef<Subject<MessageStream> | undefined>(undefined);
+
   useEffect(() => {
     return () =>
     getWebSocket()?.close();
   }, []);
 
   useEffect(() => {
+
     try {
-      console.log("useChat: lastJsonMessage", lastJsonMessage);
-      if (lastJsonMessage) {
-        console.log("useChat: lastJsonMessage", lastJsonMessage);
+      // console.log("useChat: lastJsonMessage", lastJsonMessage);
+      if (lastJsonMessage && messageObservableRef.current) {
+        // console.log("useChat: lastJsonMessage", lastJsonMessage);
         if ("error" in lastJsonMessage) {
           return;
         }
         if ((lastJsonMessage as unknown as StreamedMessage).is_streaming) {
           try {
-            messageStreamObservable.next({
+            messageObservableRef.current.next({
               stream: (lastJsonMessage as unknown as StreamedMessage).stream,
               sources: undefined,
             });
           } catch {
-            messageStreamObservable.error("error");
+            messageObservableRef.current.error("error");
           }
         } else {
-          messageStreamObservable.next({
+          messageObservableRef.current.next({
             stream: "",
             sources: (lastJsonMessage as unknown as StreamedMessage).ai_message
               .sources,
           });
-          messageStreamObservable.complete();
+
+          messageObservableRef.current.complete();
         }
       }
     } catch {
-      messageStreamObservable.error("error");
+      if(messageObservableRef.current){
+      messageObservableRef.current.error("error");
     }
+    }
+
   }, [lastJsonMessage]);
 
   function prepareMessageToSend(message: string): HumanMessage | undefined {
@@ -114,14 +118,19 @@ export function useChatStream(
   }
 
   function sendMessage(message: string) {
+    const newObservable = new Subject<MessageStream>();
+    messageObservableRef.current = newObservable;
+
     const msg = prepareMessageToSend(message);
     try {
       sendJsonMessage(JSON.parse(JSON.stringify(msg)));
-      return messageStreamObservable;
+      return newObservable;
+      
     } catch (e) {
       console.log("error sending message", e);
       return undefined;
     }
+    
   }
 
   return {
