@@ -1,0 +1,17 @@
+dist/
+node_modules/
+package-lock.json
+
+.envrc
+build.sh
+react-nexbot*.tgz
+runtest.sh
+wipe.sh
+.vscode/launch.json
+react-nexbot-test/.*/
+react-nexbot-test/.*
+openapi.json
+*/certs/*
+update_api.sh
+
+.vscode/settings.json
