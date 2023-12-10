@@ -25,7 +25,7 @@ export function useChatStream(
     keyRetrievalCallback: () => Promise<string>,
     botId: string,
     conversationId: string|undefined,
-    user_display_name: string,
-    bot_display_name: string,
+    user_display_name?: string,
+    bot_display_name?: string,
   ):UseChatStreamReturn
 

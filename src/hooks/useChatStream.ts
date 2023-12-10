@@ -39,7 +39,7 @@ export function useChatStream(
   >();
 
   const [url, setUrl] = React.useState<string | null>(null);
-  const { sendJsonMessage, lastJsonMessage, getWebSocket, setSocketUrl } = useManagedWebSocket(url);
+  const { sendJsonMessage, lastJsonMessage, getWebSocket, setSocketUrl, } = useManagedWebSocket(url);
   const {wsTicket} = useWebSocketTicket(keyRetrievalCallback, 30 * 60, botId)
 
 
@@ -65,8 +65,8 @@ const messageObservableRef = React.useRef<Subject<MessageStream> | undefined>(un
       if (lastJsonMessage && messageObservableRef.current) {
         if(!(lastJsonMessage as unknown as StreamedMessage).is_conversation_summary){
         // console.log("useChat: lastJsonMessage", lastJsonMessage);
-        if ("error" in lastJsonMessage) {
-          return;
+        if (lastJsonMessage && lastJsonMessage.type && lastJsonMessage.type === "error"){
+          console.log("error", lastJsonMessage.message);
         }
         if ((lastJsonMessage as unknown as StreamedMessage).is_streaming) {
           try {
