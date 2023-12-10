@@ -1,6 +1,6 @@
 {
   "name": "react-nexbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hooks and utilities to chat with NEXBots from your project",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,7 +35,6 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "axios": "^1.6.2",
     "node-fetch": "^3.3.2",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
