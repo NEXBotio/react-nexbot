@@ -1,6 +1,6 @@
 {
   "name": "react-nexbot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Hooks and utilities to chat with NEXBots from your project",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
