@@ -7,7 +7,7 @@ import axios from "axios";
 function App() {
   const { sendMessage } = useChatStream(() => {
     return axios
-      .get("https://localhost:8000/secrets/generate_single_use_token", {
+      .get("https://apis.nexbot.io/web/v1/secrets/generate_single_use_token", {
         headers: {
           Authorization: "Bearer " + process.env.REACT_APP_SERVER_SECRET,
         },

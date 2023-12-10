@@ -14,13 +14,13 @@
       - [MessageStream](#messagestream)
     - [Installation](#installation)
     - [Example Usage](#example-usage)
-      - [Sending a Message](#sending-a-message)
+    - [Nexbot Authentication Endpoint](#nexbot-authentication-endpoint)
         - [JavaScript](#javascript)
         - [TypeScript](#typescript)
       - [Invoking useChatStream](#invoking-usechatstream)
         - [JavaScript](#javascript-1)
         - [TypeScript](#typescript-1)
-    - [Nexbot Authentication Endpoint](#nexbot-authentication-endpoint)
+      - [Sending a Message](#sending-a-message)
         - [JavaScript](#javascript-2)
         - [TypeScript](#typescript-2)
     - [Dependency Note](#dependency-note)
@@ -81,79 +81,6 @@ import { useChatStream }  from "react-nexbot";
 
 ### Example Usage
 
-#### Sending a Message
-
-##### JavaScript
-```javascript
-const onClick = () => {
-  setWillStream(true);
-}
-const [text, setText] = useState("");
-useEffect(() => {
-  if (willStream) {
-    setText("");
-    const newObservable = sendMessage("Hello!");
-    newObservable.subscribe({
-      next: (data) => {
-        setText(prev => prev ? prev + data.stream : data.stream);
-      },
-      complete: () => {
-        setWillStream(false);
-      },
-    });
-  }
-}, [willStream]);
-```
-##### TypeScript
-```typescript
- const [willStream, setWillStream] = useState<boolean>(false);
-  const [text, setText] = useState<string>('');
-  const { sendMessage } = useChatStream(/* arguments here */);
-
-  useEffect(() => {
-    if (willStream) {
-      setText('');
-      const newObservable: Observable<any> = sendMessage('Hello!');
-      newObservable.subscribe({
-        next: (data) => {
-          setText((prev: string) => prev ? `${prev}${data.stream}` : data.stream);
-        },
-        complete: () => {
-          setWillStream(false);
-        },
-      });
-    }
-  }, [willStream, sendMessage]);
-
-  const onClick = (): void => {
-    setWillStream(true);
-  };
-```
-
-#### Invoking useChatStream
-
-##### JavaScript
-```javascript
-const { sendMessage } = useChatStream(() => {
-  return axios.get("https://your.api/nexbot/authing/endpoint")
-    .then((res) => {
-      return res.data.token;
-    });
-}, botId);
-```
-
-##### TypeScript
-```typescript
-const botId: string = 'your-bot-id'; // Replace with your actual bot ID
-
-const { sendMessage } = useChatStream(() => {
-  return axios.get("https://your.api/nexbot/authing/endpoint")
-    .then((res) => {
-      return res.data.token as string;
-    });
-}, botId);
-```
-
 ### Nexbot Authentication Endpoint
 
 For Nexbot authentication, your endpoint should call the Nexbot API as follows:
@@ -202,6 +129,84 @@ const getSingleUseToken = async (): Promise<any> => {
 The response will contain a JSON payload with the key `access_token`. Your callback must provide only this string.
 
 The callback is initially used by the hook to cache a single-use token, which opens a websocket connection with our servers and is immediately invalidated. The hook refreshes the token every 25 minutes using the callback. While the callback does not have to be an API call, using one allows Nexbot to handle token refresh for you.
+
+
+#### Invoking useChatStream
+
+##### JavaScript
+```javascript
+const { sendMessage } = useChatStream(() => {
+  return axios.get("https://your.api/nexbot/authing/endpoint")
+    .then((res) => {
+      return res.data.token;
+    });
+}, botId);
+```
+
+##### TypeScript
+```typescript
+const botId: string = 'your-bot-id'; // Replace with your actual bot ID
+
+const { sendMessage } = useChatStream(() => {
+  return axios.get("https://your.api/nexbot/authing/endpoint")
+    .then((res) => {
+      return res.data.token as string;
+    });
+}, botId);
+```
+
+#### Sending a Message
+
+##### JavaScript
+```javascript
+const onClick = () => {
+  setWillStream(true);
+}
+const [text, setText] = useState("");
+useEffect(() => {
+  if (willStream) {
+    setText("");
+    const newObservable = sendMessage("Hello!");
+    newObservable.subscribe({
+      next: (data) => {
+        setText(prev => prev ? prev + data.stream : data.stream);
+      },
+      complete: () => {
+        setWillStream(false);
+      },
+    });
+  }
+}, [willStream]);
+```
+
+##### TypeScript
+```typescript
+ const [willStream, setWillStream] = useState<boolean>(false);
+  const [text, setText] = useState<string>('');
+  const { sendMessage } = useChatStream(/* arguments here */);
+
+  useEffect(() => {
+    if (willStream) {
+      setText('');
+      const newObservable: Observable<any> = sendMessage('Hello!');
+      newObservable.subscribe({
+        next: (data) => {
+          setText((prev: string) => prev ? `${prev}${data.stream}` : data.stream);
+        },
+        complete: () => {
+          setWillStream(false);
+        },
+      });
+    }
+  }, [willStream, sendMessage]);
+
+  const onClick = (): void => {
+    setWillStream(true);
+  };
+```
+
+
+
 
 ### Dependency Note
 
