@@ -18,13 +18,12 @@ export interface MessageStream{
   
 
 export interface UseChatStreamReturn {
-  sendMessage: (message: string) => Subject<MessageStream>|undefined; // Replace ResponseType with the actual response type
+  sendMessage: (message: string,  conversationId: string | undefined ) => Subject<MessageStream>|undefined; // Replace ResponseType with the actual response type
 }
 
 export function useChatStream(
     keyRetrievalCallback: () => Promise<string>,
     botId: string,
-    conversationId: string|undefined,
     user_display_name?: string,
     bot_display_name?: string,
   ):UseChatStreamReturn

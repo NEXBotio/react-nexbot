@@ -25,12 +25,12 @@ export interface StreamedMessage {
   ai_message: AIMessage;
 }
 export interface UseChatStreamReturn {
-  sendMessage: (message: string) => Subject<MessageStream> | undefined; // Replace ResponseType with the actual response type
+  sendMessage: (message: string,  conversationId: string | undefined) => Subject<MessageStream> | undefined; // Replace ResponseType with the actual response type
 }
 export function useChatStream(
   keyRetrievalCallback: () => Promise<string>,
   botId: string,
-  conversationId: string | undefined = undefined,
+
   user_display_name: string = "Guest",
   bot_display_name: string = "Bot"
 ): UseChatStreamReturn {
@@ -96,7 +96,7 @@ const messageObservableRef = React.useRef<Subject<MessageStream> | undefined>(un
 
   }, [lastJsonMessage]);
 
-  function prepareMessageToSend(message: string): HumanMessage | undefined {
+  function prepareMessageToSend(message: string,  conversationId: string | undefined = undefined): HumanMessage | undefined {
     if (botId) {
       let conv: Conversation;
       if (conversationId) {
@@ -119,11 +119,11 @@ const messageObservableRef = React.useRef<Subject<MessageStream> | undefined>(un
     }
   }
 
-  function sendMessage(message: string) {
+  function sendMessage(message: string,  conversationId: string | undefined = undefined) {
     const newObservable = new Subject<MessageStream>();
     messageObservableRef.current = newObservable;
 
-    const msg = prepareMessageToSend(message);
+    const msg = prepareMessageToSend(message,conversationId);
     try {
       sendJsonMessage(JSON.parse(JSON.stringify(msg)));
       return newObservable;
